@@ -60,7 +60,8 @@ def make_rotating_equity_info(num_assets,
 def make_simple_equity_info(sids,
                             start_date,
                             end_date,
-                            symbols=None):
+                            symbols=None,
+                            names=None):
     """
     Create a DataFrame representing assets that exist for the full duration
     between `start_date` and `end_date`.
@@ -82,11 +83,16 @@ def make_simple_equity_info(sids,
     num_assets = len(sids)
     if symbols is None:
         symbols = list(ascii_uppercase[:num_assets])
+
+    if names is None:
+        names = map(lambda x: str(x) + " INC.", symbols)
+
     return pd.DataFrame(
         {
             'symbol': list(symbols),
             'start_date': pd.to_datetime([start_date] * num_assets),
             'end_date': pd.to_datetime([end_date] * num_assets),
+            'asset_name': list(names),
             'exchange': 'TEST',
             'exchange_full': 'TEST FULL',
         },
@@ -97,6 +103,7 @@ def make_simple_equity_info(sids,
             'symbol',
             'exchange',
             'exchange_full',
+            'asset_name',
         ),
     )
 
